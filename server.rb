@@ -26,11 +26,11 @@ puts "Server listening lightning fast on port #{port}"
 
 def handle_room_selection(client, chat_controller)
   loop do
-    client.puts "Enter the name of the room you want to create or join (or /quit to exit):"
+    client.puts "Enter the name of the room you want to create or join (or /quit to exit)"
     room_name = client.gets.chomp
     return if room_name.downcase == '/quit'
 
-    client.puts "Enter a password for the room (or press enter to skip):"
+    client.puts "Enter a password for the room (or press enter to skip)"
     password = client.gets.chomp
 
     if chat_controller.chat_rooms[room_name]
