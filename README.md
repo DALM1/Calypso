@@ -23,13 +23,21 @@ Calypso is a terminal program built in Ruby using TCP for communication and foll
 
 
 ```sh
+git clone https://github.com/DALM1/Calypso.git
+```
+
+```sh
+cd Calypso
+```
+
+```sh
 bundle install
 ```
 
 To host the server
 ```sh
 ruby server.rb
-````
+```
 
 To join a server
 ```sh
