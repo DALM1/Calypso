@@ -1,6 +1,6 @@
-<p align="center">
-# Calypso
-</p>
+<h1 align="center">
+💎 Calypso 💎
+</h1>
 
 ![Logo de Calypso](assets/calypso-logo.png)
 
