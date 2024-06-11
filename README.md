@@ -2,6 +2,7 @@
 
 ![Logo de Calypso](assets/calypso-logo.png)
 
+
 ```sh
 (       ) (    (       )
  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /(
