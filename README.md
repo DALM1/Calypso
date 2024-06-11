@@ -30,10 +30,10 @@ bundle install
 
 To host the server
 ```sh
-ruby server.rb
+ruby ser.rb
 ```
 
 To join a server
 ```sh
-ruby client.rb
+ruby cli.rb
 ```
