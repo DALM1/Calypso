@@ -13,8 +13,8 @@ class ChatController
     @view.welcome_message
   end
 
-  def create_room(name, password)
-    chat_room = ChatRoom.new(name, password)
+  def create_room(name, password, creator)
+    chat_room = ChatRoom.new(name, password, creator)
     @chat_rooms[name] = chat_room
   end
 
@@ -30,6 +30,8 @@ class ChatController
         break
       elsif message.downcase == '/list'
         list_users(chat_room, client)
+      elsif message.downcase == '/roominfo'
+        room_info(chat_room, client)
       else
         chat_room.broadcast_message(message, username)
       end
@@ -39,8 +41,13 @@ class ChatController
   end
 
   def list_users(chat_room, client)
-    usernames = chat_room.clients.keys
-    client.puts "Users in this room: #{usernames.join(', ')}"
+    client.puts "Users in this room: #{chat_room.list_users}"
+  end
+
+  def room_info(chat_room, client)
+    client.puts "Room Name: #{chat_room.name}"
+    client.puts "Creator: #{chat_room.creator}"
+    client.puts "Users: #{chat_room.list_users}"
   end
 
   def prompt_username(client)

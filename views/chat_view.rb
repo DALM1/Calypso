@@ -19,21 +19,5 @@ class ChatView
     puts "             All right reserved                "
     puts "                                               "
     puts "                                               "
-
-  end
-
-  def prompt_room_name
-    puts "Enter the name of the chat room you want to create or join:"
-    gets.chomp
-  end
-
-  def prompt_password
-    puts "Enter a password for the chat room (or press enter to skip):"
-    gets.chomp
-  end
-
-  def prompt_message
-    print ">: "
-    gets.chomp
   end
 end

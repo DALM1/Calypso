@@ -33,16 +33,19 @@ def handle_room_selection(client, chat_controller)
     client.puts "Enter a password for the room (or press enter to skip)"
     password = client.gets.chomp
 
+    client.puts "Enter your username:"
+    username = client.gets.chomp
+
     if chat_controller.chat_rooms[room_name]
       if chat_controller.chat_rooms[room_name].password == password
-        chat_controller.chat_rooms[room_name].add_client(client, client.username)
+        chat_controller.chat_rooms[room_name].add_client(client, username)
         chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name])
       else
         client.puts "Incorrect password. Try again."
       end
     else
-      chat_controller.create_room(room_name, password)
-      chat_controller.chat_rooms[room_name].add_client(client, client.username)
+      chat_controller.create_room(room_name, password, username)
+      chat_controller.chat_rooms[room_name].add_client(client, username)
       chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name])
     end
   end
