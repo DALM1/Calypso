@@ -1,6 +1,6 @@
 # Calypso
 
-![Logo de Calypso](/Users/dalm1/Desktop/Calypso/assets/calypso-logo.png)
+![Logo de Calypso](assets/calypso-logo.png)
 
 
 ```sh
