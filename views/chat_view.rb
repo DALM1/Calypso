@@ -1,4 +1,3 @@
-# views/chat_view.rb
 class ChatView
   def welcome_message
     puts "                                               "

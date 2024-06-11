@@ -20,7 +20,7 @@ class ChatController
 
   def chat_loop(client, chat_room)
     username = prompt_username(client)
-    client.puts "Welcome, #{username}! You can start chatting now."
+    client.puts "Welcome, #{username}"
     chat_room.add_client(client, username)
 
     loop do
