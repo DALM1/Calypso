@@ -1,0 +1,16 @@
+Características
+
+	•	Configurar el Servidor: Permitir configurar la dirección IP del servidor, puerto de la máquina, etc.
+	•	Mostrar el Nombre de Usuario: Mostrar el nombre del usuario antes de su mensaje.
+	•	Solicitud Única del Nombre de Usuario: El nombre del usuario debe solicitarse solo una vez al entrar en la sala.
+	•	Comando List: El comando /list debe mostrar las personas en la sala solo a la persona que emitió el comando.
+	•	Servidor Inquebrantable: Asegurar que el servidor sea robusto y seguro contra averías.
+	•	Personalizaciones: Considerar opciones para personalizaciones.
+	•	Gestión de Códigos de Error: Gestionar códigos de error tanto en el servidor como en el cliente.
+	•	Implementación del Propietario: Implementar el rol de Propietario para la primera persona que cree la sala.
+	•	Cambiar la Contraseña de la Sala: Cambiar la contraseña de la Sala Actual con /hodor <newpass>.
+	•	Gestión de la Sala de Chat: Gestionar la sala de chat con comandos como /ban <username>.
+	•	Asignar el Estado de Propietario: Otorgar el estado de Propietario con el comando /powerto <username>.
+	•	Vaciar la Sala Actual: Vaciar la sala actual con el comando /erased <roomname>.
+	•	Redirección de Sala: Redirigir miembros de una sala a otra con el comando /axios <CurrentRoom> <NewRoom>.
+	•	Interruptor de Desconexión del Servidor: Incluir un comando para un interruptor de desconexión del servidor.

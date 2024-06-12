@@ -1,27 +1,16 @@
-# Pouvoir set le seveur choix de l'adresse ip de la machine du port ect.
+Fonctionnalités
 
-# Afficher le nom de l'utilisateur avant le message
-
-# Il faut que le nom de l'utilisateur ne soit demandé qu'une seule fois en rentrant dans la room
-
-# La commande /list doit afficher les personnes de la room seulement pour celui qui à lancé la commande
-
-# Il faut que le serveur soit impossible à break
-
-# Reflechir à des personnalisations
-
-# Gestion de code erreur dans serv et cli
-
-# Implementation du Owner (le premier à creer la room)
-
-# Pouvoir Changer le mot de passe de la CurrentRoom avec /hodor <newpass>
-
-# Gestion de la chat room avec des commande comme /ban <username>
-
-# Give le statut Owner avec la commande /powerto <username>
-
-# Vider la current room avec la commande /erased <roomname>
-
-# Redirection des memebre d'une room vers une autre room avec la commande /axios <CurrentRoom> <NewRoom>
-
-# Commande de killSwitch du server
+	•	Configuration du Serveur : Permettre de configurer l’adresse IP du serveur, le port de la machine, etc.
+	•	Affichage du Nom d’Utilisateur : Afficher le nom de l’utilisateur avant son message.
+	•	Demande Unique du Nom d’Utilisateur : Le nom de l’utilisateur doit être demandé une seule fois à l’entrée dans la salle.
+	•	Commande List : La commande /list doit afficher les personnes présentes dans la salle uniquement à celui qui a lancé la commande.
+	•	Serveur Inviolable : Assurer que le serveur soit robuste et sécurisé contre les pannes.
+	•	Personnalisations : Envisager des options de personnalisation.
+	•	Gestion des Codes d’Erreur : Gérer les codes d’erreur dans le serveur et le client.
+	•	Implémentation du Propriétaire : Implémenter le rôle de Propriétaire pour la première personne à créer la salle.
+	•	Changer le Mot de Passe de la Salle : Changer le mot de passe de la CurrentRoom avec /hodor <newpass>.
+	•	Gestion de la Salle de Chat : Gérer la salle de chat avec des commandes telles que /ban <username>.
+	•	Attribution du Statut de Propriétaire : Attribuer le statut de Propriétaire avec la commande /powerto <username>.
+	•	Vider la Salle Actuelle : Vider la salle actuelle avec la commande /erased <roomname>.
+	•	Redirection de Salle : Rediriger les membres d’une salle vers une autre avec la commande /axios <CurrentRoom> <NewRoom>.
+	•	Interrupteur Général du Serveur : Inclure une commande pour un interrupteur général du serveur.
