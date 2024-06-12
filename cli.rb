@@ -1,7 +1,7 @@
 require 'socket'
 
-server_ip = '127.0.0.1'
-server_port = 3000
+server_ip = '195.35.1.108'
+server_port = 3630
 
 client = TCPSocket.new(server_ip, server_port)
 

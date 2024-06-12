@@ -1,7 +1,7 @@
 require 'socket'
 require_relative './controllers/chat_controller'
 
-port = 3000
+port = 3630
 server = TCPServer.new(port)
 chat_controller = ChatController.new
 
