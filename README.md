@@ -20,12 +20,12 @@ cd Calypso
 bundle install
 ```
 
-To host the server
+host the server
 ```sh
 ruby ser.rb
 ```
 
-To join a server
+join a server
 ```sh
 ruby cli.rb
 ```
