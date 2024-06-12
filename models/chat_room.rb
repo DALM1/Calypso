@@ -1,3 +1,5 @@
+require 'tzinfo'
+
 class ChatRoom
   attr_accessor :name, :password, :clients, :creator
 
@@ -19,7 +21,9 @@ class ChatRoom
   end
 
   def broadcast_message(message, sender)
-    timestamp = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    tz = TZInfo::Timezone.get('Europe/Paris')
+    timestamp = tz.now.strftime("%Y-%m-%d %H:%M:%S")
+
     formatted_message = "#{timestamp} #{sender}: #{message}"
     @clients.each do |username, client|
       client.puts formatted_message unless username == sender
