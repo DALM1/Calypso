@@ -10,12 +10,12 @@ class ChatRoom
 
   def add_client(client, username)
     @clients[username] = client
-    broadcast_message("#{username} has joined the chat room.", "Server")
+    broadcast_message("#{username} has joined the chat", "Server")
   end
 
   def remove_client(client, username)
     @clients.delete(username)
-    broadcast_message("#{username} has left the chat room.", "Server")
+    broadcast_message("#{username} has left the chat", "Server")
   end
 
   def broadcast_message(message, sender)

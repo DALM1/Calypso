@@ -30,14 +30,14 @@ class ChatController
         break
       elsif message.downcase == '/list'
         list_users(chat_room, client)
-      elsif message.downcase == '/roominfo'
+      elsif message.downcase == '/info'
         room_info(chat_room, client)
       else
         chat_room.broadcast_message(message, username)
       end
     end
 
-    client.puts "You have left the room. Enter another room name or /quit to exit."
+    client.puts "You have left the room. Enter another room name or /quit to exit"
   end
 
   def list_users(chat_room, client)
