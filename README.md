@@ -17,8 +17,13 @@ cd Calypso
 ```
 
 ```sh
+gem install bundle
+```
+
+```sh
 bundle install
 ```
+
 ```sh
 ruby cal.rb
 ```
