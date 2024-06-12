@@ -20,5 +20,5 @@ cd Calypso
 bundle install
 ```
 ```sh
-ruby cli.rb
+ruby cal.rb
 ```
