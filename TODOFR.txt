@@ -1,0 +1,27 @@
+# Pouvoir set le seveur choix de l'adresse ip de la machine du port ect.
+
+# Afficher le nom de l'utilisateur avant le message
+
+# Il faut que le nom de l'utilisateur ne soit demandé qu'une seule fois en rentrant dans la room
+
+# La commande /list doit afficher les personnes de la room seulement pour celui qui à lancé la commande
+
+# Il faut que le serveur soit impossible à break
+
+# Reflechir à des personnalisations
+
+# Gestion de code erreur dans serv et cli
+
+# Implementation du Owner (le premier à creer la room)
+
+# Pouvoir Changer le mot de passe de la CurrentRoom avec /hodor <newpass>
+
+# Gestion de la chat room avec des commande comme /ban <username>
+
+# Give le statut Owner avec la commande /powerto <username>
+
+# Vider la current room avec la commande /erased <roomname>
+
+# Redirection des memebre d'une room vers une autre room avec la commande /axios <CurrentRoom> <NewRoom>
+
+# Commande de killSwitch du server
