@@ -3,7 +3,6 @@ Features
 	•	Set the server with the choice of IP address, machine port, etc.
 	•	Display the user’s name before their message.
 	•	The user’s name should be requested only once upon entering the room.
-	•	The command /list should display the people in the room only to the person who launched the command.
 	•	The server must be unbreakable.
 	•	Consider customizations.
 	•	Error code management in server and client.

@@ -3,7 +3,6 @@ Características
 	•	Configurar el Servidor: Permitir configurar la dirección IP del servidor, puerto de la máquina, etc.
 	•	Mostrar el Nombre de Usuario: Mostrar el nombre del usuario antes de su mensaje.
 	•	Solicitud Única del Nombre de Usuario: El nombre del usuario debe solicitarse solo una vez al entrar en la sala.
-	•	Comando List: El comando /list debe mostrar las personas en la sala solo a la persona que emitió el comando.
 	•	Servidor Inquebrantable: Asegurar que el servidor sea robusto y seguro contra averías.
 	•	Personalizaciones: Considerar opciones para personalizaciones.
 	•	Gestión de Códigos de Error: Gestionar códigos de error tanto en el servidor como en el cliente.

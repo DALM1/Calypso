@@ -3,7 +3,6 @@ Fonctionnalités
 	•	Configuration du Serveur : Permettre de configurer l’adresse IP du serveur, le port de la machine, etc.
 	•	Affichage du Nom d’Utilisateur : Afficher le nom de l’utilisateur avant son message.
 	•	Demande Unique du Nom d’Utilisateur : Le nom de l’utilisateur doit être demandé une seule fois à l’entrée dans la salle.
-	•	Commande List : La commande /list doit afficher les personnes présentes dans la salle uniquement à celui qui a lancé la commande.
 	•	Serveur Inviolable : Assurer que le serveur soit robuste et sécurisé contre les pannes.
 	•	Personnalisations : Envisager des options de personnalisation.
 	•	Gestion des Codes d’Erreur : Gérer les codes d’erreur dans le serveur et le client.
