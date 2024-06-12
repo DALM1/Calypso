@@ -13,3 +13,5 @@ Fonctionnalités
 	•	Vider la Salle Actuelle : Vider la salle actuelle avec la commande /erased <roomname>.
 	•	Redirection de Salle : Rediriger les membres d’une salle vers une autre avec la commande /axios <CurrentRoom> <NewRoom>.
 	•	Interrupteur Général du Serveur : Inclure une commande pour un interrupteur général du serveur.
+  • Ajouter la Fonctionnalitée de creer un etrnl avec une commande c'est comme une room dans laquel on peut stocker une string sur une duree limitée ou pour toujours
+  • Ajouter la Fonctionnalitée pour supprimer un etrnl pour le créateur de celui-ci
