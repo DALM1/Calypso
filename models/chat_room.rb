@@ -33,8 +33,4 @@ class ChatRoom
   def list_users
     @clients.keys.join(', ')
   end
-
-  def change_password(new_password)
-    @password = new_password
-  end
 end

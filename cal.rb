@@ -1,60 +1,42 @@
 require 'socket'
-require_relative './controllers/chat_controller'
 
-port = 3630
-server = TCPServer.new(port)
-chat_controller = ChatController.new
+server_ip = '195.35.1.108'
+server_port = 3630
+
+client = TCPSocket.new(server_ip, server_port)
 
 puts "                                               "
-puts "-----------------------------------------------"
-puts "                                               "
-puts "  (       ) (    (       )"
-puts "  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /("
-puts "  )\\   )\\   (()/( )\\()|()/((()/( )\\())"
-puts "  (((_|(((_)(  /(_)|(_)/ /(_))/(_)|(_)/"
-puts "  )\\___)\\ _ )\\(_))__ ((_|_)) (_))   ((_)"
-puts "  ((/ __(_)_\\(_) | \\ \\ / / _ \\/ __| / _ \\"
-puts "  | (__ / _ \\ | |__\\ V /|  _/\\__ \\| (_) |"
-puts "   \\___/_/ \\_\\|____||_| |_|  |___/ \\___/ "
-puts "                                               "
-puts "-----------------------------------------------"
-puts "             Welcome to Calypso                "
-puts "             All right reserved                "
-puts "                                               "
-puts "                                               "
-puts "Server listening lightning fast on port #{port}"
+    puts "-----------------------------------------------"
+    puts "                                               "
 
-def handle_room_selection(client, chat_controller)
+    puts "  (       ) (    (       )"
+    puts "  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /("
+    puts "  )\\   )\\   (()/( )\\()|()/((()/( )\\())"
+    puts "  (((_|(((_)(  /(_)|(_)/ /(_))/(_)|(_)/"
+    puts "  )\\___)\\ _ )\\(_))__ ((_|_)) (_))   ((_)"
+    puts "  ((/ __(_)_\\(_) | \\ \\ / / _ \\/ __| / _ \\"
+    puts "  | (__ / _ \\ | |__\\ V /|  _/\\__ \\| (_) |"
+    puts "   \\___/_/ \\_\\|____||_| |_|  |___/ \\___/ "
+
+    puts "                                               "
+    puts "-----------------------------------------------"
+    puts "             Welcome to Calypso                "
+    puts "             All right reserved                "
+    puts "                                               "
+    puts "                                               "
+
+puts "Connected to chat server at #{server_ip}:#{server_port}"
+
+Thread.new do
   loop do
-    client.puts "Enter the name of the room you want to create or join (or /quit to exit)"
-    room_name = client.gets.chomp
-    break if room_name.downcase == '/quit'
-
-    client.puts "Enter a password for the room (or press enter to skip)"
-    password = client.gets.chomp
-
-    client.puts "Enter your username:"
-    username = client.gets.chomp
-
-    if chat_controller.chat_rooms[room_name]
-      if chat_controller.chat_rooms[room_name].password == password
-        chat_controller.chat_rooms[room_name].add_client(client, username)
-        chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
-      else
-        client.puts "Incorrect password. Try again."
-      end
-    else
-      chat_controller.create_room(room_name, password, username)
-      chat_controller.chat_rooms[room_name].add_client(client, username)
-      chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
-    end
+    message = client.gets.chomp
+    puts message
   end
 end
 
 loop do
-  client = server.accept
-  Thread.new(client) do |client_connection|
-    handle_room_selection(client_connection, chat_controller)
-    client_connection.close
-  end
+  message = gets.chomp
+  client.puts message
 end
+
+client.close
