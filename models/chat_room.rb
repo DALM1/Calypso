@@ -1,13 +1,14 @@
 require 'tzinfo'
 
 class ChatRoom
-  attr_accessor :name, :password, :clients, :creator
+  attr_accessor :name, :password, :clients, :creator, :history
 
   def initialize(name, password = nil, creator = "Server")
     @name = name
     @password = password
     @clients = {}
     @creator = creator
+    @history = []
   end
 
   def add_client(client, username)
@@ -25,6 +26,7 @@ class ChatRoom
     timestamp = tz.now.strftime("%Y-%m-%d %H:%M:%S")
 
     formatted_message = "#{timestamp} #{sender}: #{message}"
+    @history << formatted_message
     @clients.each do |username, client|
       client.puts formatted_message unless username == sender
     end

@@ -40,6 +40,10 @@ class ChatController
         erase_room(chat_room, client, username, $1)
       when /^\/axios (.+) (.+)$/
         redirect_room(chat_room, client, username, $1, $2)
+      when /^\/whisp (.+) (.+)$/
+        whisper_message(chat_room, client, username, $1, $2)
+      when /^\/history$/
+        show_history(chat_room, client)
       else
         chat_room.broadcast_message(message, username)
       end
@@ -126,6 +130,20 @@ class ChatController
     else
       client.puts "Only the creator can redirect rooms."
     end
+  end
+
+  def whisper_message(chat_room, client, username, recipient, message)
+    if recipient_key = find_user(chat_room, recipient)
+      chat_room.clients[recipient_key].puts "Whisper from #{username}: #{message}"
+      client.puts "Whisper sent to #{recipient_key}: #{message}"
+    else
+      client.puts "User #{recipient} not found."
+    end
+  end
+
+  def show_history(chat_room, client)
+    client.puts "Message history:"
+    chat_room.history.each { |msg| client.puts msg }
   end
 
   def prompt_username(client)
