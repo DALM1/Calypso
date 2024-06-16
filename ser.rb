@@ -28,7 +28,7 @@ def handle_room_selection(client, chat_controller)
   loop do
     client.puts "Enter the name of the room you want to create or join (or /quit to exit)"
     room_name = client.gets.chomp
-    return if room_name.downcase == '/quit'
+    break if room_name.downcase == '/quit'
 
     client.puts "Enter a password for the room (or press enter to skip)"
     password = client.gets.chomp
@@ -39,14 +39,14 @@ def handle_room_selection(client, chat_controller)
     if chat_controller.chat_rooms[room_name]
       if chat_controller.chat_rooms[room_name].password == password
         chat_controller.chat_rooms[room_name].add_client(client, username)
-        chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name])
+        chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
       else
         client.puts "Incorrect password. Try again."
       end
     else
       chat_controller.create_room(room_name, password, username)
       chat_controller.chat_rooms[room_name].add_client(client, username)
-      chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name])
+      chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
     end
   end
 end
