@@ -1,3 +1,4 @@
+require 'colorize'
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 
@@ -146,14 +147,4 @@ class ChatController
     chat_room.history.each { |msg| client.puts msg }
   end
 
-  def prompt_username(client)
-    client.puts "Enter a username:".colorize(:yellow)
-    client.gets.chomp
-  end
-
-  private
-
-  def find_user(chat_room, username)
-    chat_room.clients.keys.find { |u| u.casecmp?(username) }
-  end
-end
+  def prompt_username(client
