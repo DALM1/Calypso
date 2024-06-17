@@ -30,23 +30,27 @@ def handle_room_selection(client, chat_controller)
   prompt = TTY::Prompt.new
 
   loop do
-    room_name = prompt.ask("Enter the name of the room you want to create or join (or /quit to exit):")
-    break if room_name.downcase == '/quit'
+    choices = chat_controller.chat_rooms.keys + ["Create a new room", "/quit"]
+    room_name = prompt.select("Select the room you want to join or create a new one:", choices)
 
-    password = prompt.mask("Enter a password for the room (or press enter to skip):")
-    username = prompt.ask("Enter your username:")
-
-    if chat_controller.chat_rooms[room_name]
+    if room_name == "Create a new room"
+      room_name = prompt.ask("Enter the name of the new room:")
+      password = prompt.mask("Enter a password for the room (or press enter to skip):")
+      username = prompt.ask("Enter your username:")
+      chat_controller.create_room(room_name, password, username)
+      chat_controller.chat_rooms[room_name].add_client(client, username)
+      chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
+    elsif room_name == "/quit"
+      break
+    else
+      password = prompt.mask("Enter the room password:")
+      username = prompt.ask("Enter your username:")
       if chat_controller.chat_rooms[room_name].password == password
         chat_controller.chat_rooms[room_name].add_client(client, username)
         chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
       else
         client.puts "Incorrect password. Try again.".colorize(:red)
       end
-    else
-      chat_controller.create_room(room_name, password, username)
-      chat_controller.chat_rooms[room_name].add_client(client, username)
-      chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
     end
   end
 end
