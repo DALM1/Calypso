@@ -1,4 +1,5 @@
 require 'socket'
+require 'colorize'
 
 server_ip = '195.35.1.108'
 server_port = 3630
@@ -25,7 +26,7 @@ puts "                                               "
     puts "                                               "
     puts "                                               "
 
-puts "Connected to chat server at #{server_ip}:#{server_port}"
+puts "Connected to chat server at #{server_ip}:#{server_port}".colorize(:green)
 
 Thread.new do
   loop do

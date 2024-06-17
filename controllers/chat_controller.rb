@@ -1,4 +1,5 @@
 require 'colorize'
+require 'tty-prompt'
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 
@@ -8,6 +9,7 @@ class ChatController
   def initialize
     @chat_rooms = {}
     @view = ChatView.new
+    @prompt = TTY::Prompt.new
   end
 
   def start
@@ -147,4 +149,9 @@ class ChatController
     chat_room.history.each { |msg| client.puts msg }
   end
 
-  def prompt_username(client
+  private
+
+  def find_user(chat_room, username)
+    chat_room.clients.keys.find { |u| u.casecmp?(username) }
+  end
+end
