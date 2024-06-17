@@ -19,7 +19,7 @@ class ChatController
   end
 
   def chat_loop(client, chat_room, username)
-    client.puts "Welcome, #{username}"
+    client.puts "Welcome, #{username}".colorize(:green)
 
     loop do
       message = client.gets&.chomp
@@ -50,25 +50,25 @@ class ChatController
     end
 
     chat_room.remove_client(client, username)
-    client.puts "You have left the room. Enter another room name or /quit to exit"
+    client.puts "You have left the room. Enter another room name or /quit to exit".colorize(:yellow)
   end
 
   def list_users(chat_room, client)
-    client.puts "Users in this room: #{chat_room.list_users}"
+    client.puts "Users in this room: #{chat_room.list_users}".colorize(:blue)
   end
 
   def room_info(chat_room, client)
-    client.puts "Room Name: #{chat_room.name}"
-    client.puts "Creator: #{chat_room.creator}"
-    client.puts "Users: #{chat_room.list_users}"
+    client.puts "Room Name: #{chat_room.name}".colorize(:blue)
+    client.puts "Creator: #{chat_room.creator}".colorize(:blue)
+    client.puts "Users: #{chat_room.list_users}".colorize(:blue)
   end
 
   def change_password(chat_room, client, username, new_password)
     if username.casecmp?(chat_room.creator)
       chat_room.change_password(new_password)
-      client.puts "Password changed successfully."
+      client.puts "Password changed successfully.".colorize(:green)
     else
-      client.puts "Only the creator can change the password."
+      client.puts "Only the creator can change the password.".colorize(:red)
     end
   end
 
@@ -76,12 +76,12 @@ class ChatController
     if username.casecmp?(chat_room.creator)
       if user_key = find_user(chat_room, user_to_ban)
         chat_room.remove_client(chat_room.clients[user_key], user_key)
-        client.puts "#{user_key} has been banned from the room."
+        client.puts "#{user_key} has been banned from the room.".colorize(:green)
       else
-        client.puts "User #{user_to_ban} not found."
+        client.puts "User #{user_to_ban} not found.".colorize(:red)
       end
     else
-      client.puts "Only the creator can ban users."
+      client.puts "Only the creator can ban users.".colorize(:red)
     end
   end
 
@@ -89,12 +89,12 @@ class ChatController
     if username.casecmp?(chat_room.creator)
       if new_owner_key = find_user(chat_room, new_owner)
         chat_room.creator = new_owner_key
-        client.puts "#{new_owner_key} is now the owner of the room."
+        client.puts "#{new_owner_key} is now the owner of the room.".colorize(:green)
       else
-        client.puts "User #{new_owner} not found."
+        client.puts "User #{new_owner} not found.".colorize(:red)
       end
     else
-      client.puts "Only the current owner can transfer ownership."
+      client.puts "Only the current owner can transfer ownership.".colorize(:red)
     end
   end
 
@@ -103,15 +103,15 @@ class ChatController
       if @chat_rooms[room_name]
         @chat_rooms.delete(room_name)
         chat_room.clients.each do |user, client_conn|
-          client_conn.puts "The room #{room_name} has been erased by the creator."
+          client_conn.puts "The room #{room_name} has been erased by the creator.".colorize(:red)
           client_conn.close
         end
-        client.puts "Room #{room_name} has been erased."
+        client.puts "Room #{room_name} has been erased.".colorize(:green)
       else
-        client.puts "Room #{room_name} not found."
+        client.puts "Room #{room_name} not found.".colorize(:red)
       end
     else
-      client.puts "Only the creator can erase the room."
+      client.puts "Only the creator can erase the room.".colorize(:red)
     end
   end
 
@@ -120,34 +120,34 @@ class ChatController
       if @chat_rooms[new_room]
         chat_room.clients.each do |user, client_conn|
           @chat_rooms[new_room].add_client(client_conn, user)
-          client_conn.puts "You have been redirected to room #{new_room} by the creator."
+          client_conn.puts "You have been redirected to room #{new_room} by the creator.".colorize(:yellow)
         end
         @chat_rooms.delete(current_room)
-        client.puts "All users have been redirected to #{new_room} and #{current_room} has been closed."
+        client.puts "All users have been redirected to #{new_room} and #{current_room} has been closed.".colorize(:green)
       else
-        client.puts "Target room #{new_room} does not exist."
+        client.puts "Target room #{new_room} does not exist.".colorize(:red)
       end
     else
-      client.puts "Only the creator can redirect rooms."
+      client.puts "Only the creator can redirect rooms.".colorize(:red)
     end
   end
 
   def whisper_message(chat_room, client, username, recipient, message)
     if recipient_key = find_user(chat_room, recipient)
-      chat_room.clients[recipient_key].puts "Whisper from #{username}: #{message}"
-      client.puts "Whisper sent to #{recipient_key}: #{message}"
+      chat_room.clients[recipient_key].puts "Whisper from #{username}: #{message}".colorize(:cyan)
+      client.puts "Whisper sent to #{recipient_key}: #{message}".colorize(:cyan)
     else
-      client.puts "User #{recipient} not found."
+      client.puts "User #{recipient} not found.".colorize(:red)
     end
   end
 
   def show_history(chat_room, client)
-    client.puts "Message history:"
+    client.puts "Message history:".colorize(:yellow)
     chat_room.history.each { |msg| client.puts msg }
   end
 
   def prompt_username(client)
-    client.puts "Enter a username:"
+    client.puts "Enter a username:".colorize(:yellow)
     client.gets.chomp
   end
 
@@ -156,4 +156,3 @@ class ChatController
   def find_user(chat_room, username)
     chat_room.clients.keys.find { |u| u.casecmp?(username) }
   end
-end

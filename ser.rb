@@ -1,4 +1,6 @@
 require 'socket'
+require 'tty-prompt'
+require 'colorize'
 require_relative './controllers/chat_controller'
 
 port = 3630
@@ -25,23 +27,21 @@ puts "                                               "
 puts "Server listening lightning fast on port #{port}"
 
 def handle_room_selection(client, chat_controller)
+  prompt = TTY::Prompt.new
+
   loop do
-    client.puts "Enter the name of the room you want to create or join (or /quit to exit)"
-    room_name = client.gets.chomp
+    room_name = prompt.ask("Enter the name of the room you want to create or join (or /quit to exit):")
     break if room_name.downcase == '/quit'
 
-    client.puts "Enter a password for the room (or press enter to skip)"
-    password = client.gets.chomp
-
-    client.puts "Enter your username:"
-    username = client.gets.chomp
+    password = prompt.mask("Enter a password for the room (or press enter to skip):")
+    username = prompt.ask("Enter your username:")
 
     if chat_controller.chat_rooms[room_name]
       if chat_controller.chat_rooms[room_name].password == password
         chat_controller.chat_rooms[room_name].add_client(client, username)
         chat_controller.chat_loop(client, chat_controller.chat_rooms[room_name], username)
       else
-        client.puts "Incorrect password. Try again."
+        client.puts "Incorrect password. Try again.".colorize(:red)
       end
     else
       chat_controller.create_room(room_name, password, username)
