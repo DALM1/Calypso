@@ -1,5 +1,4 @@
 require 'socket'
-require 'colorize'
 
 server_ip = '195.35.1.108'
 server_port = 3630
@@ -7,26 +6,26 @@ server_port = 3630
 client = TCPSocket.new(server_ip, server_port)
 
 puts "                                               "
-    puts "-----------------------------------------------".colorize(:yellow)
-    puts "                                               ".colorize(:green)
+    puts "-----------------------------------------------"
+    puts "                                               "
 
-    puts "  (       ) (    (       )".colorize(:green)
-    puts "  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /(".colorize(:red)
-    puts "  )\\   )\\   (()/( )\\()|()/((()/( )\\())".colorize(:red)
-    puts "  (((_|(((_)(  /(_)|(_)/ /(_))/(_)|(_)/".colorize(:red)
-    puts "  )\\___)\\ _ )\\(_))__ ((_|_)) (_))   ((_)".colorize(:red)
+    puts "  (       ) (    (       )"
+    puts "  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /("
+    puts "  )\\   )\\   (()/( )\\()|()/((()/( )\\())"
+    puts "  (((_|(((_)(  /(_)|(_)/ /(_))/(_)|(_)/"
+    puts "  )\\___)\\ _ )\\(_))__ ((_|_)) (_))   ((_)"
     puts "  ((/ __(_)_\\(_) | \\ \\ / / _ \\/ __| / _ \\"
     puts "  | (__ / _ \\ | |__\\ V /|  _/\\__ \\| (_) |"
     puts "   \\___/_/ \\_\\|____||_| |_|  |___/ \\___/ "
 
     puts "                                               "
-    puts "-----------------------------------------------".colorize(:yellow)
+    puts "-----------------------------------------------"
     puts "             Welcome to Calypso                "
     puts "             All right reserved                "
     puts "                                               "
     puts "                                               "
 
-puts "Connected to chat server at #{server_ip}:#{server_port}".colorize(:green)
+puts "Connected to chat server at #{server_ip}:#{server_port}"
 
 Thread.new do
   loop do

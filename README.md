@@ -39,19 +39,19 @@ ruby cal.rb
 	•	/info : Provides information about the room (name, creator, users).
 </p>
 <p>
-	•	/hodor <newpass> : Changes the room’s password (only the creator can do this).
+	•	/hodor 'newpass' : Changes the room’s password (only the creator can do this).
 </p>
 <p>
-	•	/ban <username> : Bans a user from the room (only the creator can do this).
+	•	/ban 'username' : Bans a user from the room (only the creator can do this).
 </p>
 <p>
-	•	/powerto <username> : Transfers the ownership of the room to another user.
+	•	/powerto 'username' : Transfers the ownership of the room to another user.
 </p>
 <p>
-	•	/erased <roomname> : Deletes the room (only the creator can do this).
+	•	/erased 'roomname' : Deletes the room (only the creator can do this).
 </p>
 <p>
-	•	/axios <CurrentRoom> <NewRoom> : Redirects all users from one room to another and closes the current room.
+	•	/axios 'CurrentRoom' 'NewRoomName' : Redirects all users from one room to another and closes the current room.
 </p>
 
 2. Permission Management:

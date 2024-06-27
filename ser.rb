@@ -1,5 +1,4 @@
 require 'socket'
-require 'colorize'
 require_relative './controllers/chat_controller'
 
 port = 3630
@@ -23,7 +22,7 @@ puts "             Welcome to Calypso                "
 puts "             All right reserved                "
 puts "                                               "
 puts "                                               "
-puts "Server listening lightning fast on port #{port}".colorize(:green)
+puts "Server listening lightning fast on port #{port}"
 
 def handle_room_selection(client, chat_controller)
   loop do
@@ -34,7 +33,7 @@ def handle_room_selection(client, chat_controller)
     client.puts "Enter a password for the room (or press enter to skip)"
     password = client.gets.chomp
 
-    client.puts "Enter your username:".colorize(:green)
+    client.puts "Enter your username:"
     username = client.gets.chomp
 
     if chat_controller.chat_rooms[room_name]
