@@ -33,6 +33,9 @@ ruby cal.rb
 
 1. User and Room Management Commands:
 <p>
+	•	/quit : Exit the current room and return to the main menu.
+</p>
+<p>
 	•	/list : Lists the users present in the room.
 </p>
 <p>
