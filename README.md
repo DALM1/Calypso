@@ -64,3 +64,4 @@ ruby cal.rb
 3. Proper Connection Management:
 
 	•	Client connections are properly closed after the user leaves the room.
+# Calypso2.0
