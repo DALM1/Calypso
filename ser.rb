@@ -1,9 +1,12 @@
 require 'socket'
 require_relative './controllers/chat_controller'
 
-server_ip = ENV['SERVER_IP']
-server_port = ENV['SERVER_PORT'].to_i
-server = TCPServer.new(port)
+# Utilisation des variables d'environnement ou valeurs par défaut si elles ne sont pas définies
+server_ip = ENV['SERVER_IP'] || '0.0.0.0'  # IP par défaut si non définie dans l'environnement
+server_port = ENV['SERVER_PORT'] ? ENV['SERVER_PORT'].to_i : 3630  # Port par défaut si non défini
+
+# Création du serveur TCP avec l'IP et le port
+server = TCPServer.new(server_ip, server_port)
 chat_controller = ChatController.new
 
 puts "                                               "
@@ -28,14 +31,14 @@ puts "Server listening lightning fast on port #{server_port}"
 def handle_room_selection(client, chat_controller)
   loop do
     client.puts "Enter the name of the room you want to create or join (or /quit to exit)"
-    room_name = client.gets.chomp
-    break if room_name.downcase == '/quit'
+    room_name = client.gets&.chomp
+    break if room_name.nil? || room_name.downcase == '/quit'
 
     client.puts "Enter a password for the room (or press enter to skip)"
-    password = client.gets.chomp
+    password = client.gets&.chomp
 
     client.puts "Enter your username >"
-    username = client.gets.chomp
+    username = client.gets&.chomp
 
     if chat_controller.chat_rooms[room_name]
       if chat_controller.chat_rooms[room_name].password == password
