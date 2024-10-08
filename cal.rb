@@ -25,7 +25,7 @@ puts "                                               "
     puts "                                               "
     puts "                                               "
 
-puts "Connected to chat server at #{server_ip}-#{server_port}"
+puts "Connected to chat server at #{server_ip}:#{server_port}"
 
 Thread.new do
   loop do
