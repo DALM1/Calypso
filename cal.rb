@@ -29,8 +29,13 @@ puts "Connected to chat server at #{server_ip}-#{server_port}"
 
 Thread.new do
   loop do
-    message = client.gets.chomp
-    puts message
+    begin
+      message = client.gets&.chomp
+      puts message if message
+    rescue StandardError => e
+      puts "Error receiving message: #{e.message}"
+      break
+    end
   end
 end
 

@@ -21,6 +21,11 @@ class ChatController
   def chat_loop(client, chat_room, username)
     client.puts "Welcome, #{username}"
 
+    # Si l'utilisateur est déjà venu dans cette salle, on lui montre l'historique des messages
+    if chat_room.has_user_returned?(username)
+      show_history(chat_room, client)
+    end
+
     loop do
       message = client.gets&.chomp
       break if message.nil? || message.downcase == '/quit'
@@ -133,7 +138,8 @@ class ChatController
   end
 
   def whisper_message(chat_room, client, username, recipient, message)
-    if recipient_key = find_user(chat_room, recipient)
+    recipient_key = find_user(chat_room, recipient)
+    if recipient_key
       chat_room.clients[recipient_key].puts "Whisper from #{username}: #{message}"
       client.puts "Whisper sent to #{recipient_key}: #{message}"
     else
@@ -146,14 +152,9 @@ class ChatController
     chat_room.history.each { |msg| client.puts msg }
   end
 
-  def prompt_username(client)
-    client.puts "Enter a username:"
-    client.gets.chomp
-  end
-
   private
 
   def find_user(chat_room, username)
-    chat_room.clients.keys.find { |u| u.casecmp?(username) }
+    chat_room.clients.keys.find { |u| u.casecmp?(username).zero? }
   end
 end
