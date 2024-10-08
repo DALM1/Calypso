@@ -154,6 +154,6 @@ class ChatController
   private
 
   def find_user(chat_room, username)
-    chat_room.clients.keys.find { |u| u.casecmp?(username) }
+    chat_room.clients.keys.find { username }
   end
 end
