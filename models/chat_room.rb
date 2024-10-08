@@ -1,7 +1,7 @@
 require 'tzinfo'
 
 class ChatRoom
-  attr_accessor :name, :password, :clients, :creator, :history, :previous_clients
+  attr_accessor :name, :password, :clients, :creator, :history
 
   def initialize(name, password = nil, creator = "Server")
     @name = name
@@ -9,12 +9,10 @@ class ChatRoom
     @clients = {}
     @creator = creator
     @history = []
-    @previous_clients = [] # Garde une trace des utilisateurs ayant quitté la salle
   end
 
   def add_client(client, username)
     @clients[username] = client
-    @previous_clients << username unless @previous_clients.include?(username) # Ajoute l'utilisateur à la liste des précédents clients s'il n'y est pas déjà
     broadcast_message("#{username} has joined the chat", "Server")
   end
 
@@ -30,7 +28,7 @@ class ChatRoom
     formatted_message = "#{timestamp} #{sender}: #{message}"
     @history << formatted_message
     @clients.each do |username, client|
-      client.puts formatted_message unless username.casecmp?(sender).zero?
+      client.puts formatted_message unless username == sender
     end
   end
 
@@ -40,9 +38,5 @@ class ChatRoom
 
   def change_password(new_password)
     @password = new_password
-  end
-
-  def has_user_returned?(username)
-    @previous_clients.include?(username)
   end
 end
