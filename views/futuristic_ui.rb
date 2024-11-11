@@ -17,7 +17,7 @@ class FuturisticUI
 
   def show_welcome
     clear
-    logo = File.read('./assets/star_wars_logo.txt')
+    logo = File.read('./assets/star_wars_logo.txt') # Assurez-vous que ce fichier existe
     setpos(lines / 2 - 4, (cols - logo.split("\n").first.length) / 2)
     attron(color_pair(1)) { addstr(logo) }
     setpos(lines - 2, (cols - "Press Enter to Begin...".length) / 2)

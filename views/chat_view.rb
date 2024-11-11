@@ -1,4 +1,5 @@
 require 'curses'
+require_relative './futuristic_ui'
 
 class ChatView
   def initialize
