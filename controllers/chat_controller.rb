@@ -1,7 +1,7 @@
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 require_relative '../models/call_manager'
-# require_relative '../models/music_manager'
+require_relative '../models/music_manager'
 require_relative '../controllers/remote_control'
 
 class ChatController
@@ -18,8 +18,13 @@ class ChatController
   end
 
   def create_room(name, password, creator)
+    if @chat_rooms.key?(name)
+      return false # Room already exists
+    end
+
     chat_room = ChatRoom.new(name, password, creator)
     @chat_rooms[name] = chat_room
+    true
   end
 
   def chat_loop(client, chat_room, username)
@@ -46,6 +51,30 @@ class ChatController
       chat_room.history.each { |msg| client.puts msg }
     when '/banned'
       client.puts "Banned users: #{chat_room.banned_users.join(', ')}"
+    when /^\/create_room (\w+)(?: (.+))?$/
+      room_name = $1
+      room_password = $2
+      if create_room(room_name, room_password, username)
+        client.puts "Room '#{room_name}' created successfully."
+      else
+        client.puts "Room '#{room_name}' already exists."
+      end
+    when /^\/join (\w+)(?: (.+))?$/
+      room_name = $1
+      room_password = $2
+      if @chat_rooms.key?(room_name)
+        target_room = @chat_rooms[room_name]
+        if target_room.password.nil? || target_room.password == room_password
+          chat_room.remove_client(username)
+          target_room.add_client(client, username)
+          chat_loop(client, target_room, username)
+          return
+        else
+          client.puts "Incorrect password for room '#{room_name}'."
+        end
+      else
+        client.puts "Room '#{room_name}' does not exist."
+      end
     when /^\/change_password (.+)$/
       new_password = $1
       if username == chat_room.creator
@@ -70,6 +99,9 @@ class ChatController
       else
         client.puts "Only the room creator can kick users."
       end
+    when /^\/dm (\w+) (.+)$/
+      recipient, dm_message = $1, $2
+      chat_room.direct_message(username, recipient, dm_message)
     when /^\/react (\d+) (.+)$/
       message_id, reaction = $1.to_i, $2
       chat_room.react_to_message(message_id, reaction, username)

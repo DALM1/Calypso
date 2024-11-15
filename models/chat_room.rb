@@ -36,6 +36,14 @@ class ChatRoom
     broadcast_message("#{username} has been kicked out of the room.", 'Server')
   end
 
+  def direct_message(sender, recipient, message)
+    if @clients.key?(recipient)
+      @clients[recipient].puts "[DM from #{sender}]: #{message}"
+    else
+      @clients[sender].puts "User #{recipient} is not in the room."
+    end
+  end
+
   def react_to_message(message_id, reaction, username)
     if message_id >= 0 && message_id < @history.size
       @history[message_id] += " (#{reaction} by #{username})"
