@@ -11,17 +11,17 @@ class WebRTCServer
       @clients = []
       puts "WebRTC server started on port #{@port}..."
 
-      EM::WebSocket.start(host: "0.0.0.0", port: @port) do |ws|
-        ws.onopen do
+      Faye::WebSocket::Server.start(host: '0.0.0.0', port: @port) do |ws|
+        ws.on :open do
           @clients << ws
           puts "Client connected."
         end
 
-        ws.onmessage do |msg|
-          @clients.each { |client| client.send(msg) unless client == ws }
+        ws.on :message do |msg|
+          @clients.each { |client| client.send(msg.data) unless client == ws }
         end
 
-        ws.onclose do
+        ws.on :close do
           @clients.delete(ws)
           puts "Client disconnected."
         end
