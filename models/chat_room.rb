@@ -66,7 +66,7 @@ class ChatRoom
 
   def stats
     <<~STATS
-      Tread: #{@name}
+      Thread: #{@name}
       Creator: #{@creator}
       Active Users: #{@clients.keys.size}
       Total Messages: #{@history.size}

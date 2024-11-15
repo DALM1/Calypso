@@ -19,7 +19,7 @@ class ChatController
 
   def create_room(name, password, creator)
     if @chat_rooms.key?(name)
-      return false # Room already exists
+      return false
     end
 
     chat_room = ChatRoom.new(name, password, creator)
@@ -28,7 +28,7 @@ class ChatController
   end
 
   def chat_loop(client, chat_room, username)
-    client.puts "Welcome to the room: #{chat_room.name}. Type /help for commands."
+    client.puts "Wired on thread > #{chat_room.name}. Type /help for commands."
 
     loop do
       message = client.gets&.chomp
@@ -38,7 +38,7 @@ class ChatController
     end
 
     chat_room.remove_client(username)
-    client.puts "You have left the room."
+    client.puts "You have left the thread."
   end
 
   private
@@ -46,20 +46,20 @@ class ChatController
   def handle_command(message, client, chat_room, username)
     case message.downcase
     when '/list'
-      client.puts "Users: #{chat_room.list_users}"
+      client.puts "Users - #{chat_room.list_users}"
     when '/history'
       chat_room.history.each { |msg| client.puts msg }
     when '/banned'
-      client.puts "Banned users: #{chat_room.banned_users.join(', ')}"
-    when /^\/create_room (\w+)(?: (.+))?$/
+      client.puts "Banned users | #{chat_room.banned_users.join(', ')}"
+    when /^\/cr (\w+)(?: (.+))?$/
       room_name = $1
       room_password = $2
       if create_room(room_name, room_password, username)
-        client.puts "Room '#{room_name}' created successfully."
+        client.puts "Thread '#{room_name}' created successfully."
       else
-        client.puts "Room '#{room_name}' already exists."
+        client.puts "Tread '#{room_name}' already exists."
       end
-    when /^\/join (\w+)(?: (.+))?$/
+    when /^\/cd (\w+)(?: (.+))?$/
       room_name = $1
       room_password = $2
       if @chat_rooms.key?(room_name)
@@ -70,34 +70,34 @@ class ChatController
           chat_loop(client, target_room, username)
           return
         else
-          client.puts "Incorrect password for room '#{room_name}'."
+          client.puts "Incorrect password for room '#{room_name}'"
         end
       else
-        client.puts "Room '#{room_name}' does not exist."
+        client.puts "Thread '#{room_name}' does not exist"
       end
-    when /^\/change_password (.+)$/
+    when /^\/cpd (.+)$/
       new_password = $1
       if username == chat_room.creator
         chat_room.password = new_password
-        chat_room.broadcast_message("Room password has been changed.", 'Server')
+        chat_room.broadcast_message("Thread password has been changed", 'Server')
       else
-        client.puts "Only the room creator can change the password."
+        client.puts "Only the thread creator can change the password"
       end
     when /^\/ban (.+)$/
       user_to_ban = $1
       if username == chat_room.creator
         chat_room.ban_user(user_to_ban)
-        client.puts "#{user_to_ban} has been banned."
+        client.puts "#{user_to_ban} has been banned"
       else
-        client.puts "Only the room creator can ban users."
+        client.puts "Only the thread creator can ban users"
       end
     when /^\/kick (.+)$/
       user_to_kick = $1
       if username == chat_room.creator
         chat_room.kick_user(user_to_kick)
-        client.puts "#{user_to_kick} has been kicked from the room."
+        client.puts "#{user_to_kick} has been kicked from the thread"
       else
-        client.puts "Only the room creator can kick users."
+        client.puts "Only the thread creator can kick users"
       end
     when /^\/dm (\w+) (.+)$/
       recipient, dm_message = $1, $2
