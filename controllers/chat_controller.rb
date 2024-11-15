@@ -1,7 +1,7 @@
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 require_relative '../models/call_manager'
-require_relative '../models/music_manager'
+# require_relative '../models/music_manager'
 require_relative '../controllers/remote_control'
 
 class ChatController
