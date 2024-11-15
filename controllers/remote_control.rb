@@ -23,7 +23,7 @@ class RemoteControl
       result = `#{command}`
       chat_room.broadcast_message("Result of '#{command}':\n#{result}", sender)
     else
-      chat_room.broadcast_message("#{target} is not connected.", sender)
+      chat_room.broadcast_message("#{target} is not connected. Available users: #{chat_room.clients.keys.join(', ')}", sender)
     end
   rescue => e
     chat_room.broadcast_message("Error executing command: #{e.message}", sender)

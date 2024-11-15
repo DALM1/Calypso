@@ -10,9 +10,9 @@ class FuturisticUI
     curs_set(0)
     noecho
     stdscr.keypad(true)
-    init_pair(1, COLOR_YELLOW, -1) # Texte jaune
-    init_pair(2, COLOR_BLUE, -1)   # Texte bleu
-    init_pair(3, COLOR_RED, -1)    # Texte rouge
+    init_pair(1, COLOR_YELLOW, -1)
+    init_pair(2, COLOR_BLUE, -1)
+    init_pair(3, COLOR_RED, -1)
   end
 
   def display_welcome

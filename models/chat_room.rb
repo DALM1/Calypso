@@ -12,17 +12,17 @@ class ChatRoom
 
   def add_client(client, username)
     if @banned_users.include?(username)
-      client.puts "You are banned from this room."
+      client.puts "You are banned from this thread."
       return
     end
 
     @clients[username] = client
-    broadcast_message("#{username} joined the room.", 'Server')
+    broadcast_message("#{username} joined the thread.", 'Server')
   end
 
   def remove_client(username)
     @clients.delete(username)
-    broadcast_message("#{username} left the room.", 'Server')
+    broadcast_message("#{username} left the thread.", 'Server')
   end
 
   def ban_user(username)
@@ -33,14 +33,14 @@ class ChatRoom
 
   def kick_user(username)
     remove_client(username)
-    broadcast_message("#{username} has been kicked out of the room.", 'Server')
+    broadcast_message("#{username} has been kicked out of the thread.", 'Server')
   end
 
   def direct_message(sender, recipient, message)
     if @clients.key?(recipient)
-      @clients[recipient].puts "[DM from #{sender}]: #{message}"
+      @clients[recipient].puts "[DM > #{sender}] - #{message}"
     else
-      @clients[sender].puts "User #{recipient} is not in the room."
+      @clients[sender].puts "User #{recipient} is not in the thread."
     end
   end
 
@@ -66,7 +66,7 @@ class ChatRoom
 
   def stats
     <<~STATS
-      Room Name: #{@name}
+      Tread: #{@name}
       Creator: #{@creator}
       Active Users: #{@clients.keys.size}
       Total Messages: #{@history.size}
