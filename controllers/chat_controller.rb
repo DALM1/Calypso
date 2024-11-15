@@ -1,7 +1,7 @@
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 require_relative '../models/call_manager'
-# require_relative '../models/music_manager'
+require_relative '../models/music_manager'
 require_relative '../controllers/remote_control'
 
 class ChatController
@@ -44,12 +44,37 @@ class ChatController
       client.puts "Users: #{chat_room.list_users}"
     when '/history'
       chat_room.history.each { |msg| client.puts msg }
-    when /^\/whisp (.+) (.+)$/
-      recipient, msg = $1, $2
-      chat_room.whisper(username, recipient, msg)
-    when /^\/qt (.+) (.+)$/
-      target, cmd = $1, $2
-      @remote_control.execute_command(chat_room, username, target, cmd)
+    when '/banned'
+      client.puts "Banned users: #{chat_room.banned_users.join(', ')}"
+    when /^\/change_password (.+)$/
+      new_password = $1
+      if username == chat_room.creator
+        chat_room.password = new_password
+        chat_room.broadcast_message("Room password has been changed.", 'Server')
+      else
+        client.puts "Only the room creator can change the password."
+      end
+    when /^\/ban (.+)$/
+      user_to_ban = $1
+      if username == chat_room.creator
+        chat_room.ban_user(user_to_ban)
+        client.puts "#{user_to_ban} has been banned."
+      else
+        client.puts "Only the room creator can ban users."
+      end
+    when /^\/kick (.+)$/
+      user_to_kick = $1
+      if username == chat_room.creator
+        chat_room.kick_user(user_to_kick)
+        client.puts "#{user_to_kick} has been kicked from the room."
+      else
+        client.puts "Only the room creator can kick users."
+      end
+    when /^\/react (\d+) (.+)$/
+      message_id, reaction = $1.to_i, $2
+      chat_room.react_to_message(message_id, reaction, username)
+    when '/stats'
+      client.puts chat_room.stats
     when '/play'
       MusicManager.play(chat_room)
     when '/stop'
@@ -58,22 +83,9 @@ class ChatController
       CallManager.start_call(chat_room)
     when '/share_screen'
       CallManager.start_screen_share(chat_room)
-    when /^\/ban (.+)$/
-      user_to_ban = $1
-      if chat_room.clients.key?(user_to_ban)
-        chat_room.remove_client(user_to_ban)
-        client.puts "#{user_to_ban} has been banned."
-      else
-        client.puts "#{user_to_ban} not found in the room."
-      end
-    when /^\/powerto (.+)$/
-      new_owner = $1
-      if chat_room.clients.key?(new_owner)
-        chat_room.creator = new_owner
-        chat_room.broadcast_message("#{new_owner} is now the owner.", 'Server')
-      else
-        client.puts "#{new_owner} not found in the room."
-      end
+    when /^\/qt (.+) (.+)$/
+      target, cmd = $1, $2
+      @remote_control.execute_command(chat_room, username, target, cmd)
     else
       chat_room.broadcast_message(message, username)
     end
