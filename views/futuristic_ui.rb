@@ -10,14 +10,14 @@ class FuturisticUI
     curs_set(0)
     noecho
     stdscr.keypad(true)
-    init_pair(1, COLOR_YELLOW, -1) # Texte doré
+    init_pair(1, COLOR_YELLOW, -1) # Texte jaune
     init_pair(2, COLOR_BLUE, -1)   # Texte bleu
     init_pair(3, COLOR_RED, -1)    # Texte rouge
   end
 
-  def show_welcome
+  def display_welcome
     clear
-    logo = File.read('./assets/star_wars_logo.txt') # Assurez-vous que ce fichier existe
+    logo = File.read('./assets/futuristic_logo.txt')
     setpos(lines / 2 - 4, (cols - logo.split("\n").first.length) / 2)
     attron(color_pair(1)) { addstr(logo) }
     setpos(lines - 2, (cols - "Press Enter to Begin...".length) / 2)
