@@ -5,9 +5,9 @@ server_port = ENV['SERVER_PORT'] ? ENV['SERVER_PORT'].to_i : 3630
 
 begin
   client = TCPSocket.new(server_ip, server_port)
-  puts "Connected to server: #{server_ip}:#{server_port}"
+  puts "Connected to Calypso server at #{server_ip}:#{server_port}"
 rescue => e
-  puts "Connection failed: #{e.message}"
+  puts "Unable to connect: #{e.message}"
   exit
 end
 
@@ -16,8 +16,21 @@ Thread.new do
     begin
       message = client.gets&.chomp
       puts message unless message.nil?
-    rescue IOError
-      puts "Connection lost. Reconnecting..."
+    rescue Errno::ECONNRESET, IOError
+      puts "Connection lost. Attempting to reconnect..."
+      sleep 2
+      retry
+    end
+  end
+end
+
+Thread.new do
+  loop do
+    begin
+      sleep 10
+      client.puts '/ping'
+    rescue Errno::EPIPE
+      puts "Lost connection to server."
       exit
     end
   end

@@ -29,15 +29,10 @@ class ChatRoom
     timestamp = Time.now.strftime('%Y-%m-%d %H:%M:%S')
     formatted_message = "[#{timestamp}] #{sender}: #{message}"
     @history << formatted_message
-    log_message(formatted_message)
     @clients.each_value { |client| client.puts formatted_message }
   end
 
-  private
-
-  def log_message(message)
-    File.open('./logs/chat_logs.txt', 'a') { |file| file.puts(message) }
-  rescue => e
-    puts "Failed to log message: #{e.message}"
+  def list_users
+    @clients.keys.join(', ')
   end
 end
