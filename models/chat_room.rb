@@ -25,51 +25,19 @@ class ChatRoom
     broadcast_message("#{username} left the thread.", 'Server')
   end
 
-  def ban_user(username)
-    remove_client(username)
-    @banned_users << username
-    broadcast_message("#{username} has been banned.", 'Server')
-  end
-
-  def kick_user(username)
-    remove_client(username)
-    broadcast_message("#{username} has been kicked out of the thread.", 'Server')
-  end
-
-  def direct_message(sender, recipient, message)
-    if @clients.key?(recipient)
-      @clients[recipient].puts "[DM > #{sender}] - #{message}"
-    else
-      @clients[sender].puts "User #{recipient} is not in the thread."
-    end
-  end
-
-  def react_to_message(message_id, reaction, username)
-    if message_id >= 0 && message_id < @history.size
-      @history[message_id] += " (#{reaction} by #{username})"
-      broadcast_message("Reaction added to message #{message_id}: #{reaction}", 'Server')
-    else
-      @clients[username].puts "Invalid message ID."
-    end
-  end
-
   def broadcast_message(message, sender)
     timestamp = Time.now.strftime('%Y-%m-%d %H:%M:%S')
-    formatted_message = "◊ [#{timestamp}] ◊ [#{sender}]> #{message}"
+    formatted_message = "[#{timestamp}] #{sender}: #{message}"
     @history << formatted_message
+    log_message(formatted_message)
     @clients.each_value { |client| client.puts formatted_message }
   end
 
-  def list_users
-    @clients.keys.join(', ')
-  end
+  private
 
-  def stats
-    <<~STATS
-      Thread› #{@name}
-      Creator› #{@creator}
-      Active Users› #{@clients.keys.size}
-      Total Messages› #{@history.size}
-    STATS
+  def log_message(message)
+    File.open('./logs/chat_logs.txt', 'a') { |file| file.puts(message) }
+  rescue => e
+    puts "Failed to log message: #{e.message}"
   end
 end
