@@ -5,7 +5,28 @@ server_port = ENV['SERVER_PORT'] ? ENV['SERVER_PORT'].to_i : 3630
 
 begin
   client = TCPSocket.new(server_ip, server_port)
-  puts "Connected to Calypso server at #{server_ip}:#{server_port}"
+
+  puts "                                               "
+    puts "-----------------------------------------------"
+    puts "                                               "
+
+    puts "  (       ) (    (       )"
+    puts "  (    (     )\\ ) ( /( )\\ ) )\\ ) ( /("
+    puts "  )\\   )\\   (()/( )\\()|()/((()/( )\\())"
+    puts "  (((_|(((_)(  /(_)|(_)/ /(_))/(_)|(_)/"
+    puts "  )\\___)\\ _ )\\(_))__ ((_|_)) (_))   ((_)"
+    puts "  ((/ __(_)_\\(_) | \\ \\ / / _ \\/ __| / _ \\"
+    puts "  | (__ / _ \\ | |__\\ V /|  _/\\__ \\| (_) |"
+    puts "   \\___/_/ \\_\\|____||_| |_|  |___/ \\___/ "
+
+    puts "                                               "
+    puts "-----------------------------------------------"
+    puts "             Welcome to Calypso                "
+    puts "             All right reserved                "
+    puts "                                               "
+    puts "                                               "
+
+  puts "Connected to Calypso at #{server_ip}-#{server_port}"
 rescue => e
   puts "Unable to connect: #{e.message}"
   exit
@@ -16,22 +37,10 @@ Thread.new do
     begin
       message = client.gets&.chomp
       puts message unless message.nil?
-    rescue Errno::ECONNRESET, IOError
-      puts "Connection lost. Attempting to reconnect..."
-      sleep 2
+    rescue => e
+      puts "Connection lost: #{e.message}. Retrying..."
+      sleep 5
       retry
-    end
-  end
-end
-
-Thread.new do
-  loop do
-    begin
-      sleep 10
-      client.puts '/ping'
-    rescue Errno::EPIPE
-      puts "Lost connection to server."
-      exit
     end
   end
 end
