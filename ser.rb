@@ -27,4 +27,3 @@ loop do
 rescue => e
     puts "Error accepting client: #{e.message}"
   end
-end
