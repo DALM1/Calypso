@@ -1,5 +1,3 @@
-require 'net/ssh'
-
 class RemoteControl
   def initialize
     @token_file = './control_token.txt'
@@ -20,12 +18,10 @@ class RemoteControl
 
     client = chat_room.clients[target]
     if client
-      result = `#{command}`.strip
+      result = `#{command}`
       chat_room.broadcast_message("Result of '#{command}':\n#{result}", sender)
     else
-      chat_room.broadcast_message("#{target} is not connected. Available users: #{chat_room.clients.keys.join(', ')}", sender)
+      chat_room.broadcast_message("#{target} is not connected.", sender)
     end
-  rescue => e
-    chat_room.broadcast_message("Error executing command: #{e.message}", sender)
   end
 end

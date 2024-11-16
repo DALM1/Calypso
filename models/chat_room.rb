@@ -1,5 +1,5 @@
 class ChatRoom
-  attr_accessor :name, :password, :clients, :creator, :history, :banned_users, :roles, :statuses, :pinned_messages, :events
+  attr_accessor :name, :password, :clients, :creator, :history, :banned_users
 
   def initialize(name, password = nil, creator = nil)
     @name = name
@@ -8,68 +8,67 @@ class ChatRoom
     @history = []
     @creator = creator
     @banned_users = []
-    @roles = { creator => 'admin' }
-    @statuses = {}
-    @pinned_messages = []
-    @events = []
   end
 
-  def change_password(username, new_password)
-    if username == @creator
-      @password = new_password
+  def add_client(client, username)
+    if @banned_users.include?(username)
+      client.puts "You are banned from this thread."
+      return
+    end
+
+    @clients[username] = client
+    broadcast_message("#{username} joined the thread.", 'Server')
+  end
+
+  def remove_client(username)
+    @clients.delete(username)
+    broadcast_message("#{username} left the thread.", 'Server')
+  end
+
+  def ban_user(username)
+    remove_client(username)
+    @banned_users << username
+    broadcast_message("#{username} has been banned.", 'Server')
+  end
+
+  def kick_user(username)
+    remove_client(username)
+    broadcast_message("#{username} has been kicked out of the thread.", 'Server')
+  end
+
+  def direct_message(sender, recipient, message)
+    if @clients.key?(recipient)
+      @clients[recipient].puts "[DM from #{sender}]: #{message}"
     else
-      raise "Only the creator can change the password."
+      @clients[sender].puts "User #{recipient} is not in the thread."
     end
   end
 
-  def set_status(username, status)
-    @statuses[username] = status
+  def broadcast_message(message, sender)
+    timestamp = Time.now.strftime('%Y-%m-%d %H:%M:%S')
+    formatted_message = "[#{timestamp}] #{sender}: #{message}"
+    @history << formatted_message
+    @clients.each_value { |client| client.puts formatted_message }
   end
 
-  def get_all_statuses
-    @statuses.map { |user, status| "#{user}: #{status}" }.join("\n")
+  def list_users
+    @clients.keys.join(', ')
   end
 
-  def pin_message(message_id, username)
-    if @roles[username] == 'admin' || username == @creator
-      @pinned_messages << @history[message_id]
-    else
-      raise "Only administrators can pin messages."
-    end
+  def commands
+    <<~COMMANDS
+      Available commands:
+      - /help: Show available commands
+      - /list: List users in the thread
+      - /history: Show message history
+      - /banned: Show banned users
+      - /cr <name> <password>: Create a new thread
+      - /cd <name> <password>: Switch to another thread
+      - /cpd <password>: Change thread password
+      - /ban <username>: Ban a user
+      - /kick <username>: Kick a user
+      - /dm <username> <message>: Send a direct message
+      - /qt <username> <command>: Execute a command remotely
+    COMMANDS
   end
-
-  def view_pins
-    @pinned_messages.join("\n")
-  end
-
-  def schedule_event(title, date_time)
-    @events << { title: title, date_time: date_time }
-  end
-
-  def view_events
-    @events.map { |event| "#{event[:title]} at #{event[:date_time]}" }.join("\n")
-  end
-end
-
-def add_client(client, username)
-  if @banned_users.include?(username)
-    client.puts "You are banned from this thread."
-    return
-  end
-
-  @clients[username] = client
-  broadcast_message("#{username} joined the thread.", 'Server')
-  notify_all("#{username} is now online.", 'Server')
-end
-
-def remove_client(username)
-  @clients.delete(username)
-  broadcast_message("#{username} left the thread.", 'Server')
-  notify_all("#{username} is now offline.", 'Server')
-end
-
-private
-
-def notify_all(notification, sender)
-  @clients.each_value { |client| client.puts "[#{sender}] #{notification}" }
 end

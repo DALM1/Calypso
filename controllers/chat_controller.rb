@@ -1,7 +1,6 @@
 require_relative '../models/chat_room'
 require_relative '../views/chat_view'
 require_relative '../models/call_manager'
-require_relative '../models/poll_manager'
 require_relative '../controllers/remote_control'
 
 class ChatController
@@ -28,7 +27,7 @@ class ChatController
   end
 
   def chat_loop(client, chat_room, username)
-    client.puts "Wired on thread > #{chat_room.name}. Type /help for commands."
+    client.puts "Welcome to thread '#{chat_room.name}'. Type /help for commands."
 
     loop do
       message = client.gets&.chomp
@@ -45,41 +44,68 @@ class ChatController
 
   def handle_command(message, client, chat_room, username)
     case message.downcase
+    when '/help'
+      client.puts chat_room.commands
     when '/list'
-      client.puts "Users - #{chat_room.list_users}"
-    when /^\/cp(.+)$/
-      new_password = $1
-      chat_room.change_password(username, new_password)
-      client.puts "Password updated successfully!"
-    when /^\/delete_thread (\w+)$/
-      thread_name = $1
-      if chat_room.creator == username
-        @chat_rooms.delete(thread_name)
-        client.puts "Thread '#{thread_name}' deleted."
+      client.puts "Users: #{chat_room.list_users}"
+    when '/history'
+      chat_room.history.each { |msg| client.puts msg }
+    when '/banned'
+      client.puts "Banned users: #{chat_room.banned_users.join(', ')}"
+    when /^\/cr (\w+)(?: (.+))?$/
+      room_name = $1
+      room_password = $2
+      if create_room(room_name, room_password, username)
+        client.puts "Thread '#{room_name}' created successfully."
       else
-        client.puts "Only the creator can delete this thread."
+        client.puts "Thread '#{room_name}' already exists."
       end
-    when /^\/status (.+)$/
-      status = $1
-      chat_room.set_status(username, status)
-      client.puts "Status updated to: #{status}"
-    when '/view_status'
-      statuses = chat_room.get_all_statuses
-      client.puts "User statuses:\n#{statuses}"
-    when /^\/pin_message (\d+)$/
-      message_id = $1.to_i
-      chat_room.pin_message(message_id, username)
-      client.puts "Message #{message_id} pinned!"
-    when '/view_pins'
-      pins = chat_room.view_pins
-      client.puts "Pinned messages:\n#{pins}"
-    when /^\/schedule_event "(.+)" (.+)$/
-      title, date_time = $1, $2
-      chat_room.schedule_event(title, date_time)
-      client.puts "Event '#{title}' scheduled for #{date_time}."
-    when '/view_events'
-      events = chat_room.view_events
-      client.puts "Scheduled events:\n#{events}"
+    when /^\/cd (\w+)(?: (.+))?$/
+      room_name = $1
+      room_password = $2
+      if @chat_rooms.key?(room_name)
+        target_room = @chat_rooms[room_name]
+        if target_room.password.nil? || target_room.password == room_password
+          chat_room.remove_client(username)
+          target_room.add_client(client, username)
+          chat_loop(client, target_room, username)
+          return
+        else
+          client.puts "Incorrect password for thread '#{room_name}'"
+        end
+      else
+        client.puts "Thread '#{room_name}' does not exist."
+      end
+    when /^\/cpd (.+)$/
+      new_password = $1
+      if username == chat_room.creator
+        chat_room.password = new_password
+        chat_room.broadcast_message("Thread password has been changed.", 'Server')
+      else
+        client.puts "Only the thread creator can change the password."
+      end
+    when /^\/ban (.+)$/
+      user_to_ban = $1
+      if username == chat_room.creator
+        chat_room.ban_user(user_to_ban)
+        client.puts "#{user_to_ban} has been banned."
+      else
+        client.puts "Only the thread creator can ban users."
+      end
+    when /^\/kick (.+)$/
+      user_to_kick = $1
+      if username == chat_room.creator
+        chat_room.kick_user(user_to_kick)
+        client.puts "#{user_to_kick} has been kicked from the thread."
+      else
+        client.puts "Only the thread creator can kick users."
+      end
+    when /^\/dm (\w+) (.+)$/
+      recipient, dm_message = $1, $2
+      chat_room.direct_message(username, recipient, dm_message)
+    when /^\/qt (.+) (.+)$/
+      target, cmd = $1, $2
+      @remote_control.execute_command(chat_room, username, target, cmd)
     else
       chat_room.broadcast_message(message, username)
     end
