@@ -27,18 +27,18 @@ puts "                                               "
     puts "                                               "
     puts "                                               "
 
-puts "Server listening on #{server_ip}:#{server_port}"
+puts "Server listening on #{server_ip}›#{server_port}"
 
 loop do
   begin
     client = server.accept
     Thread.new(client) do |client_connection|
       begin
-        client_connection.puts "Enter your username:"
+        client_connection.puts "◊ Enter your username ›"
         username = client_connection.gets&.chomp
 
         if username.nil? || username.empty?
-          client_connection.puts "Invalid username. Disconnecting..."
+          client_connection.puts "◊ Invalid username. Disconnecting... ◊"
           next
         end
 
@@ -58,6 +58,6 @@ loop do
       end
     end
   rescue => e
-    puts "Error accepting client: #{e.message}"
+    puts "Error accepting client› #{e.message}"
   end
 end

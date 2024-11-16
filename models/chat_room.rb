@@ -55,7 +55,7 @@ class ChatRoom
 
   def broadcast_message(message, sender)
     timestamp = Time.now.strftime('%Y-%m-%d %H:%M:%S')
-    formatted_message = "[#{timestamp}] #{sender}: #{message}"
+    formatted_message = "◊ [#{timestamp}] ◊ [#{sender}]> #{message}"
     @history << formatted_message
     @clients.each_value { |client| client.puts formatted_message }
   end
@@ -66,10 +66,10 @@ class ChatRoom
 
   def stats
     <<~STATS
-      Thread: #{@name}
-      Creator: #{@creator}
-      Active Users: #{@clients.keys.size}
-      Total Messages: #{@history.size}
+      Thread› #{@name}
+      Creator› #{@creator}
+      Active Users› #{@clients.keys.size}
+      Total Messages› #{@history.size}
     STATS
   end
 end
